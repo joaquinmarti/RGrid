@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  
+  <title>RGrid example</title>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  
+  <style type="text/css">
+    body {
+      margin: 0px;
+    }
+  </style>
+  
+  <script type="text/javascript" src="js/rgrid.js"></script>
+  <script type="text/javascript">
+    window.onload = function () {
+      var rgrid = new RGrid.init({
+        '600': {
+          width: 550,
+          columns: 6,
+          gutter: 2,
+          align: 'center',
+          baseline: '2'
+        },
+        '1024': {
+          width: 960,
+          columns: 3,
+          gutter: 40,
+          align: 'center',
+          baseline: '20'
+        }
+      });
+    }
+  </script>
+  
+</head>
+<body>
+
+  <div style="width: 960px; margin: 0px auto;">
+    <div style="margin-top: 20px; height: 200px; width: 960px; background-color: #000"></div>
+    
+  </div>
+  
+  
+</body>
+</html>
