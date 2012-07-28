@@ -73,7 +73,7 @@ RGrid = (function () {
     // Get sizes
     var bodyWidth = document.body.scrollWidth;
     var gridWidth = options[res].width;
-    var columnWidth = (gridWidth - ((options[res].columns - 1) * options[res].gutter)) / options[res].columns;
+    var columnWidth = (gridWidth - (options[res].offset * 2) - ((options[res].columns - 1) * options[res].gutter)) / options[res].columns;
     var vlinesContainerStyle;
 
     // Main container styles depending on align parameter
@@ -126,9 +126,13 @@ RGrid = (function () {
     drawVertical(0, vlinesContainer);
     drawVertical(gridWidth, vlinesContainer);
 
+    // Draw offset
+    drawVertical(options[res].offset, vlinesContainer);
+    drawVertical(gridWidth - options[res].offset, vlinesContainer);
+
     // Draw columns
     for (n = 1; n < options[res].columns; n++) {
-      var columnLimit = (n * columnWidth) + ((n-1) * options[res].gutter);
+      var columnLimit = (n * columnWidth) + ((n-1) * options[res].gutter) + options[res].offset;
       var columnLimitGutter = columnLimit + options[res].gutter;
 
       drawVertical(columnLimit, vlinesContainer);
@@ -201,12 +205,12 @@ RGrid = (function () {
       // Merge default and user options
       options = merge({
         '1024': {
-          width: 960,
+          width: 1000,
           columns: 6,
           gutter: 20,
           align: 'center',
-          baseline: '20'
-          // @todo: add offset parameter
+          baseline: 20,
+          offset: 20
         }
       }, userOptions || {});
 
