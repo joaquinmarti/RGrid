@@ -10,7 +10,7 @@ RGrid = (function () {
   var cache = {
     horizontal: [],
     vertical: []
-  }
+  };
 
   var style = {
     horizontal: {
@@ -31,29 +31,31 @@ RGrid = (function () {
   /* Build Grid */
   var drawGrids = function() {
     for (var res in options) { // Each resolution
-      // Create grid container
-      var gridContainer;
-      gridContainer = document.createElement("div");
-      gridContainer.id = 'grid_' + res;
-      gridContainer.style.display = 'none';
+      if (options.hasOwnProperty(res)) {
+        // Create grid container
+        var gridContainer;
+        gridContainer = document.createElement("div");
+        gridContainer.id = 'grid_' + res;
+        gridContainer.style.display = 'none';
 
-      gridContainer.style = merge(gridContainer.style, {
-        position: 'absolute',
-        width: '100%',
-        height: '1px',
-        top: '0',
-        left: '0',
-        overflow: 'visible'
-      });
+        gridContainer.style = merge(gridContainer.style, {
+          position: 'absolute',
+          width: '100%',
+          height: '1px',
+          top: '0',
+          left: '0',
+          overflow: 'visible'
+        });
 
-      // Append grid container to body
-      document.body.appendChild(gridContainer);
+        // Append grid container to body
+        document.body.appendChild(gridContainer);
 
-      // Create vertical lines
-      vLines(gridContainer);
+        // Create vertical lines
+        vLines(gridContainer);
 
-      // Create horizontal lines
-      hLines(gridContainer);
+        // Create horizontal lines
+        hLines(gridContainer);
+      }
     }
 
     // Set first resolution
@@ -84,7 +86,7 @@ RGrid = (function () {
           top: '0',
           left: '0',
           overflow: 'visible'
-        }
+        };
         break;
       case 'left':
         vlinesContainerStyle = {
@@ -95,7 +97,7 @@ RGrid = (function () {
           top: '0',
           left: '0',
           overflow: 'visible'
-        }
+        };
         break;
       case 'right':
         vlinesContainerStyle = {
@@ -106,14 +108,14 @@ RGrid = (function () {
           top: '0',
           right: '0',
           overflow: 'visible'
-        }
+        };
         break;
     }
 
     // Draw vertical lines container
     var vlinesContainer;
     vlinesContainer = document.createElement("div");
-    vlinesContainer.className = 'vlines_coontainer';
+    vlinesContainer.className = 'vlines_container';
     vlinesContainer.style = merge(vlinesContainer.style, vlinesContainerStyle);
 
     // Append vertical lines container container to grid container
@@ -128,7 +130,7 @@ RGrid = (function () {
     drawVertical(gridWidth - options[res].offset, vlinesContainer);
 
     // Draw columns
-    for (n = 1; n < options[res].columns; n++) {
+    for (var n = 1; n < options[res].columns; n++) {
       var columnLimit = (n * columnWidth) + ((n-1) * options[res].gutter) + options[res].offset;
       var columnLimitGutter = columnLimit + options[res].gutter;
 
@@ -143,13 +145,13 @@ RGrid = (function () {
     var res = getRes(gridContainer.id);
 
     // Get sizes
-    var baseline = parseInt(options[res].baseline);
+    var baseline = parseInt(options[res].baseline, 10);
     var bodyHeight = document.body.scrollHeight;
 
     // Draw horizontal lines container
     var hlinesContainer;
     hlinesContainer = document.createElement("div");
-    hlinesContainer.className = 'hlines_coontainer';
+    hlinesContainer.className = 'hlines_container';
 
     // Append horizontal lines container container to grid container
     gridContainer.appendChild(hlinesContainer);
@@ -199,7 +201,7 @@ RGrid = (function () {
     window.onresize = function(event) {
       evalCurrentRes();
       // @todo: Change height: draw less or more horizontal lines
-    }
+    };
   };
 
   /* Change resolution grid */
@@ -209,14 +211,14 @@ RGrid = (function () {
     var bodyHeight = document.body.scrollHeight;
     var resolution;
 
-    for (i = resolutions.length - 1; i >= 0; i--) { // Loop inversely resolutions
+    for (var i = resolutions.length - 1; i >= 0; i--) { // Loop inversely resolutions
       if (bodyWidth >= resolutions[i]) {
         resolution = resolutions[i]; // Set current break
         break;
       }
     }
 
-    if (resolution != null && resolution != currentRes) {
+    if (resolution !== null && resolution !== currentRes) {
       currentRes = resolution;
       setCurrentRes();
     }
@@ -225,7 +227,9 @@ RGrid = (function () {
   var setCurrentRes = function() {
     // Hide all grid containers
     for (var res in options) {
-      document.getElementById('grid_' + res).style.display = 'none';
+      if (options.hasOwnProperty(res)) {
+        document.getElementById('grid_' + res).style.display = 'none';
+      }
     }
 
     // Show current resolution container
@@ -245,15 +249,14 @@ RGrid = (function () {
 
   var getRes = function(id) { // Get resolution from id "grid_*"
     var regexp = /([A-Za-z0-9]+)(_)([\d]+)/;
-    parts = regexp.exec(id);
+    var parts = regexp.exec(id);
     return parts[3];
   };
 
-  /* Public function */
-  return {
-    init: function(userOptions) {
+  /* Constructor */
 
-      // Merge default and user options
+  var RGrid = function(userOptions) {
+      //Merge default and user options
       options = merge({
         '1024': {
           columns: 6,
@@ -266,9 +269,11 @@ RGrid = (function () {
         }
       }, userOptions || {});
 
-      // Save and order resolutions
+      // Save and reverse resolutions
       for (var res in options) {
-        resolutions.push(parseInt(res));
+        if (options.hasOwnProperty(res)) {
+          resolutions.push(parseInt(res, 10));
+        }
       }
 
       resolutions.reverse();
@@ -278,8 +283,8 @@ RGrid = (function () {
 
       // Add events
       addEvents();
-    }
+  };
 
-  }
+  return RGrid;
 
 })();

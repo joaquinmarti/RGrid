@@ -2,32 +2,40 @@
 <html>
 
 <head>
-  
+
   <title>RGrid example</title>
-  
+
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  
+
   <style type="text/css">
     body {
-      margin: 0px;
+      margin: 0;
+      font-family: Helvetica, Arial, Serif;
+      background-color: #f0f0f0;
+    }
+    .wrapper {
+      width: 960px;
+      margin: 0 auto;
+      padding: 0px 20px;
+      background-color: #ffffff;
     }
   </style>
-  
-  <script type="text/javascript" src="js/rgrid.js"></script>
+
+  <script type="text/javascript" src="rgrid.js"></script>
   <script type="text/javascript">
     window.onload = function () {
-      var rgrid = new RGrid.init({
-        '600': {
-          width: 550,
-          columns: 2,
-          gutter: 10,
+      var rgrid = new RGrid({
+        '768': {
+          width: 740,
+          columns: 2, // @todo: Not working this parameter
+          gutter: 20,
           align: 'center',
-          baseline: 15
+          baseline: 30
         },
         '1024': {
-          width: 960,
-          columns: 3,
-          gutter: 40,
+          width: 1000,
+          columns: 4,
+          gutter: 30,
           align: 'center',
           baseline: 20,
           offset: 20
@@ -35,15 +43,29 @@
       });
     }
   </script>
-  
+
 </head>
 <body>
 
-  <div style="width: 960px; margin: 0px auto;">
-    <div style="margin-top: 20px; height: 200px; width: 960px; background-color: #000"></div>
-    
-  </div>
-  
-  
+  <header id="header">
+    <div class="wrapper">
+      <h1>RGrid</h1>
+      <p>A Responsive Javascript Grid</p>
+    </div>
+  </header>
+
+  <section id="content">
+    <div class="wrapper">
+      <h2>Usage</h2>
+      <h2>Parameters</h2>
+    </div>
+  </section>
+
+  <footer id="footer">
+    <div class="wrapper">
+      <p>Joaquín Martí - http://www.joaquinmarti.com</p>
+    </div>
+  </footer>
+
 </body>
 </html>
